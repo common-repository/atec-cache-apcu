@@ -1,7 +1,7 @@
 <?php
 if (!defined( 'ABSPATH' )) { exit; }
 
-class ATEC_wpcu_pcache { function __construct($url, $nonce, $action,$tools) {
+class ATEC_wpcu_pcache { function __construct($url, $nonce, $action,$wpc_tools) {
 
 global $atec_wpca_apcu_enabled;	
 global $atec_wpca_settings;
@@ -47,48 +47,49 @@ if ($atec_wpca_apcu_enabled)
 					<th>Link</th>
 					<th></th>
 				</tr>
-			<tbody>';					    
-		    	$c=0; $size=0;
-		    	$reg=preg_replace('/\//','\/',preg_replace('/https?:\/\//','',get_home_url()));
-				$reg_apcu = '/atec_WPCA_'.$salt.'_([f|p|c|t]+)_([\d|\|]+)/';
-		    	foreach ($apcu_it as $entry) 
-		    	{							
-					preg_match($reg_apcu, $entry['key'], $match);
-			    	if (isset($match[2]))
-			    	{
-						$c++; 
-						$size 			+= $entry['mem_size']; 
-						$isCat			= str_contains($match[1],'c');
-						$isTag			= str_contains($match[1],'t');
-						$isFeed			= str_contains($match[1],'f');
-						if ($isCat || $isTag) { $ex = explode('|',$match[2]); $id = (int) $ex[0]; $page = $ex[1]; }
-						else { $id = (int) $match[2]; $page=0; }
-						$type			= $isCat?'category':($isTag?'tag':get_post_type($id));
-
-						$title			= $isCat?get_cat_name($id):($isTag?get_tag($id)->name:get_the_title($id));
-						$link			= ($isCat?get_category_link($id):($isTag?get_tag_link($id):get_permalink($id)));
-						if ($isFeed) $link.='feed/';
-						if ($page!==0) 	{ $link=((str_contains($link, '?cat=') || str_contains($link, '?tag='))?$link.'&paged=':rtrim($link,'/').'/page/').$page; }
-						$short_url 	= preg_replace('/(^https?:\/\/)'.$reg.'/', '', $link);
-						echo '
-						<tr>
-							<td>', esc_attr(ucfirst($type)), '</td>
-							<td>', esc_attr($match[1].'_'.$match[2]), '</td>						
-							<td>', esc_attr($id), '</td>
-							<td>', esc_attr($isCat?$page:''), '</td>
-							<td>', ($isFeed?' <span class="'.esc_attr(atec_dash_class('yes')).'"></span>':''), '</td>
-							<td>', esc_attr(apcu_fetch('atec_WPCA_'.$salt.'_'.$match[1].'_h_'.$match[2])), '</td>
-							<td class="atec-nowrap">', esc_attr(size_format($entry['mem_size'])), '</td>
-							<td>', esc_html($title), '</td>
-							<td><a href="', esc_url($link), '" target="_blank">', esc_url($short_url), '</a></td>';
-							atec_create_button('delete&nav=Page_cache','trash',true,$url,$salt.'_'.$match[1].'_'.$match[2],$nonce);
-						echo '
-						</tr>';						    
-			    	}
-		    	}
-            if ($c>0) echo '<tr class="atec-table-tr-bold"><td colspan="2"></td><td>',esc_attr(number_format($c)),'</td><td></td><td></td><td></td><td class="atec-nowrap">',esc_attr(size_format($size)),'</td><td colspan="3"></td></tr>';
-			else echo '<tr><td colspan="10">./.</td></tr>';
-			echo '
+				</thead>
+				<tbody>';					    
+		    		$c=0; $size=0;
+		    		$reg=preg_replace('/\//','\/',preg_replace('/https?:\/\//','',get_home_url()));
+					$reg_apcu = '/atec_WPCA_'.$salt.'_([f|p|c|t]+)_([\d|\|]+)/';
+		    		foreach ($apcu_it as $entry) 
+		    		{							
+						preg_match($reg_apcu, $entry['key'], $match);
+			    		if (isset($match[2]))
+			    		{
+							$c++; 
+							$size 			+= $entry['mem_size']; 
+							$isCat			= str_contains($match[1],'c');
+							$isTag			= str_contains($match[1],'t');
+							$isFeed			= str_contains($match[1],'f');
+							if ($isCat || $isTag) { $ex = explode('|',$match[2]); $id = (int) $ex[0]; $page = $ex[1]; }
+							else { $id = (int) $match[2]; $page=0; }
+							$type			= $isCat?'category':($isTag?'tag':get_post_type($id));
+	
+							$title			= $isCat?get_cat_name($id):($isTag?get_tag($id)->name:get_the_title($id));
+							$link			= ($isCat?get_category_link($id):($isTag?get_tag_link($id):get_permalink($id)));
+							if ($isFeed) $link.='feed/';
+							if ($page!==0) 	{ $link=((str_contains($link, '?cat=') || str_contains($link, '?tag='))?$link.'&paged=':rtrim($link,'/').'/page/').$page; }
+							$short_url 	= preg_replace('/(^https?:\/\/)'.$reg.'/', '', $link);
+							echo '
+							<tr>
+								<td>', esc_attr(ucfirst($type)), '</td>
+								<td>', esc_attr($match[1].'_'.$match[2]), '</td>						
+								<td>', esc_attr($id), '</td>
+								<td>', esc_attr($isCat?$page:''), '</td>
+								<td>', ($isFeed?' <span class="'.esc_attr(atec_dash_class('yes')).'"></span>':''), '</td>
+								<td>', esc_attr(apcu_fetch('atec_WPCA_'.$salt.'_'.$match[1].'_h_'.$match[2])), '</td>
+								<td class="atec-nowrap">', esc_attr(size_format($entry['mem_size'])), '</td>
+								<td>', esc_html($title), '</td>
+								<td><a href="', esc_url($link), '" target="_blank">', esc_url($short_url), '</a></td>';
+								atec_create_button('delete&nav=Page_cache','trash',true,$url,$salt.'_'.$match[1].'_'.$match[2],$nonce);
+							echo '
+							</tr>';						    
+			    		}
+		    		}
+            	if ($c>0) echo '<tr class="atec-table-tr-bold"><td colspan="2"></td><td>',esc_attr(number_format($c)),'</td><td></td><td></td><td></td><td class="atec-nowrap">',esc_attr(size_format($size)),'</td><td colspan="3"></td></tr>';
+				else echo '<tr><td colspan="10">./.</td></tr>';
+				echo '
 	    		</tbody>
 	    	</table>';
 	    	if ($c>0)
@@ -97,7 +98,7 @@ if ($atec_wpca_apcu_enabled)
 			echo '<a class="atec-clear button" href="', esc_url($link), '" title="', esc_attr__('Empty PCache','atec-cache-apcu'), '"><span style="margin-top: 2px;" class="', esc_attr(atec_dash_class('trash')), '"></span> ', esc_attr__('Empty page cache','atec-cache-apcu'), '</a>';
 	    	}
     	}
-    	else { $tools->error('',esc_attr__('No page cache data available','atec-cache-apcu')); }
+    	else { $wpc_tools->error('',esc_attr__('No page cache data available','atec-cache-apcu')); }
 	}
 }
 

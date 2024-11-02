@@ -5,7 +5,7 @@ if (!class_exists('ATEC_wp_memory')) require_once('atec-wp-memory.php');
 
 class ATEC_wpcu_results { function __construct() {	
 
-$tools=new ATEC_wpc_tools();
+$wpc_tools=new ATEC_wpc_tools();
 $mem_tools=new ATEC_wp_memory();
 
 echo '
@@ -31,7 +31,9 @@ echo '
 			case 'OPcache': $result=opcache_reset(); break;
 	    	case 'APCu_Cache': if (function_exists('apcu_clear_cache')) $result=apcu_clear_cache(); break;
 	    	case 'WP_Ocache': $result=$wp_object_cache->flush(); break;
-			case 'APCu_PCache': atec_wpca_delete_page_cache_all(); $result=true; break;	    
+			case 'APCu_PCache': 
+				require_once('atec-cache-apcu-pcache-tools.php');
+				atec_wpca_delete_page_cache_all(); $result=true; break;
 		}
 		echo $result?'<span class="atec-green">'.esc_attr__('successful','atec-cache-apcu').'</span>':'<span class="atec-red">'.esc_attr__('failed','atec-cache-apcu').'</span>';
 		echo '.</p>
@@ -51,18 +53,18 @@ echo '
 	if ($atec_wpca_apcu_enabled && defined('WP_APCU_KEY_SALT')) 
 	{
 		$actions[]='#memory APCu';
-		if ($atec_wpca_pcache) $actions=array_merge($actions,['Page cache']);
+		if ($atec_wpca_pcache) $actions=array_merge($actions,['#blog Page cache']);
 	}
 	atec_nav_tab($url, $nonce, $nav, $actions,999,false);
 	
 	echo '<div class="atec-g atec-border">';
-	atec_progress();
+	atec_flush();
 
 	if ($nav=='Info') { require_once('atec-info.php'); new ATEC_info(__DIR__); }
 	elseif ($nav=='Settings') { require_once('atec-cache-apcu-settings.php'); }
 	elseif ($nav=='Server') { require_once('atec-server-info.php'); }
-	elseif ($nav=='APCu') { require_once('atec-cache-apcu-groups.php'); new ATEC_apcu_groups($url, $nonce, $tools,'atec_WPCA'); }
-	elseif ($nav=='Page_cache') { require_once('atec-cache-apcu-pcache-stats.php'); new ATEC_wpcu_pcache($url, $nonce, $action,$tools); }
+	elseif ($nav=='APCu') { require_once('atec-cache-apcu-groups.php'); new ATEC_apcu_groups($url, $nonce, $wpc_tools,'atec_WPCA'); }
+	elseif ($nav=='Page_cache') { require_once('atec-cache-apcu-pcache-stats.php'); new ATEC_wpcu_pcache($url, $nonce, $action,$wpc_tools); }
 	elseif ($nav=='Cache')
 	{
 
@@ -84,35 +86,35 @@ echo '
 		echo '<div class="atec-g atec-g-25">
 		
 				<div class="atec-border-white">
-    				<h4>OPcache '; $tools->enabled($opcache_enabled);
+    				<h4>OPcache '; $wpc_tools->enabled($opcache_enabled);
 		    		echo ($opcache_enabled?'<a title="'.esc_attr__('Empty cache','atec-cache-apcu').'" class="atec-right button" href="'.esc_url($url).'&flush=OPcache&nav=Cache&_wpnonce='.esc_attr($nonce).'"><span class="'.esc_attr(atec_dash_class('trash')).'"></span> '.esc_attr__('Flush','atec-cache-apcu').'</a>':''),
 					'</h4><hr>';
-    				if ($opcache_enabled) { require_once('atec-OPC-info.php'); new ATEC_OPcache_info($op_conf,$op_status,$opcache_file_only,$tools); }
-					else $tools->p('OPcache '.esc_attr__('extension is NOT installed/enabled','atec-cache-apcu'));
+    				if ($opcache_enabled) { require_once('atec-OPC-info.php'); new ATEC_OPcache_info($op_conf,$op_status,$opcache_file_only,$wpc_tools); }
+					else $wpc_tools->p('OPcache '.esc_attr__('extension is NOT installed/enabled','atec-cache-apcu'));
 					require_once('atec-OPC-help.php');
 	    		echo '
 	    		</div>
 					
 				<div class="atec-border-white">
-    	    		<h4>WP '.esc_attr__('Object Cache','atec-cache-apcu').' '; $tools->enabled($wp_enabled);
+    	    		<h4>WP '.esc_attr__('Object Cache','atec-cache-apcu').' '; $wpc_tools->enabled($wp_enabled);
 		        		echo ($wp_enabled?' <a title="'.esc_attr__('Empty cache','atec-cache-apcu').'" class="atec-right button" id="WP_Ocache_flush" href="'.esc_url($url).'&flush=WP_Ocache&nav=Cache&_wpnonce='.esc_attr($nonce).'"><span class="'.esc_attr(atec_dash_class('trash')).'"></span> '.esc_attr__('Flush','atec-cache-apcu').'</a>':''),
 					'</h4><hr>';
-					if ($wp_enabled) { require_once('atec-WPC-info.php'); new ATEC_WPcache_info($op_conf,$op_status,$opcache_file_only,$tools); }
+					if ($wp_enabled) { require_once('atec-WPC-info.php'); new ATEC_WPcache_info($op_conf,$op_status,$opcache_file_only,$wpc_tools); }
     			echo '
 				</div>
 				
 				<div class="atec-border-white">
-					<h4>APCu Cache'; $tools->enabled($atec_wpca_apcu_enabled);
+					<h4>APCu Cache'; $wpc_tools->enabled($atec_wpca_apcu_enabled);
 					echo ($atec_wpca_apcu_enabled?'<a title="'.esc_attr__('Empty cache','atec-cache-apcu').'" class="atec-right button" id="APCu_flush" href="'.esc_url($url).'&flush=APCu_Cache&nav=Cache&_wpnonce='.esc_attr($nonce).'"><span class="'.esc_attr(atec_dash_class('trash')).'"></span> '.esc_attr__('Flush','atec-cache-apcu').'</a>':''),
 					'</h4><hr>';
-					 if ($atec_wpca_apcu_enabled) { require_once('atec-APCu-info.php'); new ATEC_APCu_info($tools); }
-					else $tools->p('APCu '.esc_attr__('extension is NOT installed/enabled','atec-cache-apcu'));
+					 if ($atec_wpca_apcu_enabled) { require_once('atec-APCu-info.php'); new ATEC_APCu_info($wpc_tools); }
+					else $wpc_tools->p('APCu '.esc_attr__('extension is NOT installed/enabled','atec-cache-apcu'));
 				echo '
 				</div>';
 	    
 				echo '    
 					<div class="atec-border-white">
-		    			<h4>APCu '.esc_attr__('Page Cache','atec-cache-apcu').' '; $tools->enabled($atec_wpca_pcache);
+		    			<h4>APCu '.esc_attr__('Page Cache','atec-cache-apcu').' '; $wpc_tools->enabled($atec_wpca_pcache);
 		    			echo ($atec_wpca_pcache?' <a title="'.esc_attr__('Empty cache','atec-cache-apcu').'" class="atec-right button" id="APCu_PCache_flush" href="'.esc_url($url).'&flush=APCu_PCache&nav=Cache&_wpnonce='.esc_attr($nonce).'"><span class="'.esc_attr(atec_dash_class('trash')).'"></span> '.esc_attr__('Flush','atec-cache-apcu').'</a>':''),
 						'</h4><hr>';
 						
@@ -139,7 +141,7 @@ echo '
 	    									</tbody>
 									</table>';
 				    			}
-				    			else { $tools->error('',__('No page cache data available','atec-cache-apcu')); }
+				    			else { $wpc_tools->error('',__('No page cache data available','atec-cache-apcu')); }
 								if (!$atec_wpca_pcache) { atec_error_msg(__('Page cache is NOT active','atec-cache-apcu')); }
 			    			}
 		    			}

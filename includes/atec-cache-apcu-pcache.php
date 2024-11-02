@@ -5,7 +5,8 @@ function atec_wpca_page_buffer_start(): void
 { 	 
 	@header('X-Cache-Enabled: true');
 	// @codingStandardsIgnoreStart
-	if (!empty($_POST)) { @header('X-Cache: FAIL-$_POST '.count($_POST)); return; }
+	if (($_SERVER['REQUEST_METHOD']??'')!=='GET' || is_404() || is_search()) { @header('X-Cache: FAIL-SKIP'); return; }
+	//if (!empty($_POST)) { @header('X-Cache: FAIL-$_POST'); return; }
 	// @codingStandardsIgnoreEnd
 	if (is_user_logged_in()) { @header('X-Cache: FAIL-LOGGED_IN'); return; }
 
@@ -105,8 +106,8 @@ function atec_wpca_page_buffer_callback($buffer, $suffix, $id, $hash)
 			elemDiv.id="atec_wpca_debug";
 			elemDiv.style.cssText = "position:absolute;top:3px;width:8px;height:8px;font-size:8px;left:3px;z-index:99999;";
 			document.body.appendChild(elemDiv);
-			setTimeout(()=>{ document.getElementById("atec_wpca_debug").remove(); }, 3000);
-			document.getElementById("atec_wpca_debug_script").remove();
+			setTimeout(()=>{ const elem=document.getElementById("atec_wpca_debug"); if (elem) elem.remove(); }, 3000);
+			const elem=document.getElementById("atec_wpca_debug_script"); if (elem) elem.remove();
 		</script>';
 		$debugLen=strlen($debug);
 	}

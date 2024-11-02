@@ -2,7 +2,7 @@
   "landingPage": "/wp-admin/admin.php?page=atec_wpca",
   "preferredVersions": {
 	"php": "8.3",
-	"wp": "6.5"
+	"wp": "6.6.2"
   },
   "phpExtensionBundles": [
 	"kitchen-sink"

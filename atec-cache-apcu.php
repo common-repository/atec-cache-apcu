@@ -5,9 +5,9 @@ if (!defined('ABSPATH')) { exit; }
 * Plugin Name:  atec Cache APCu
 * Plugin URI: https://atecplugins.com/
 * Description: APCu object-cache and the only APCu based page-cache plugin available.
-* Version: 2.0.10
+* Version: 2.0.12
 * Requires at least: 5.2
-* Tested up to: 6.6.3
+* Tested up to: 6.7
 * Requires PHP: 7.4
 * Author: Chris Ahrweiler
 * Author URI: https://atec-systems.com
@@ -16,7 +16,7 @@ if (!defined('ABSPATH')) { exit; }
 * Text Domain:  atec-cache-apcu
 */
 
-wp_cache_set('atec_wpca_version','2.0.10');
+wp_cache_set('atec_wpca_version','2.0.12');
 
 $atec_wpca_apcu_enabled=extension_loaded('apcu') && apcu_enabled();
 $atec_wpca_settings=get_option('atec_WPCA_settings',[]);
@@ -28,7 +28,7 @@ if (is_admin())
 	register_activation_hook( __FILE__, function() { require_once('includes/atec-wpca-activation.php'); });
 	register_deactivation_hook( __FILE__, function() { require_once('includes/atec-wpca-deactivation.php'); });
 
-	function atec_wpca_add_action_info ( $actions ) 
+	function atec_wpca_add_action_info($actions) 
 	{
 		$links = array('<span style="color:red !important;">APCu extension required!</span>');
 		return array_merge( $actions, $links );

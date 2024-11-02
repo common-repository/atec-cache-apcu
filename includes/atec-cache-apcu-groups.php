@@ -3,7 +3,7 @@ if (!defined( 'ABSPATH' )) { exit; }
 
 class ATEC_apcu_groups { 
 
-	function __construct($url, $nonce, $tools, $prefix) {
+	function __construct($url, $nonce, $wpc_tools, $prefix) {
 
 	atec_little_block('Persistent WP-APCu-'.__('Object-Cache','atec-cache-apcu').' entries');
 
@@ -18,7 +18,6 @@ class ATEC_apcu_groups {
 			$apcu_it=new APCUIterator('/'.WP_APCU_KEY_SALT.'/');
 			if (iterator_count($apcu_it)!==0)
 			{
-				
 				atec_table_header_tiny(['#',__('Key','atec-cache-apcu'),__('Hits','atec-cache-apcu'),__('Size','atec-cache-apcu'),__('Value','atec-cache-apcu')]);
 				foreach ($apcu_it as $entry) 
 				{
@@ -45,7 +44,6 @@ class ATEC_apcu_groups {
 			if (iterator_count($apcu_it)!==0)
 			{
 				atec_little_block('Other persistent APCu-'.__('Object-Cache','atec-cache-apcu').' entries');
-
 				atec_table_header_tiny(['#',__('Key','atec-cache-apcu'),__('Hits','atec-cache-apcu'),__('Size','atec-cache-apcu'),__('Value','atec-cache-apcu')]);
 				$salt=get_option($prefix.'_settings',[])['salt']??'';
 				$reg_apcu = '/'.$prefix.'_'.$salt.'.*/';
@@ -73,7 +71,7 @@ class ATEC_apcu_groups {
 				if ($atec_wpca_page_cache_found) { atec_nav_button($url,$nonce,'delete_file','APCu',__('Delete PCache items','atec-cache-apcu').' (APCu)',false,true); }
 			}
 		}
-		else $tools->error('APCu',__('cache data could NOT be retrieved','atec-cache-apcu'));
+		else $wpc_tools->error('APCu',__('cache data could NOT be retrieved','atec-cache-apcu'));
 		
 	echo '
 	</div></div>';

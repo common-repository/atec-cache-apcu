@@ -22,8 +22,11 @@ p.submit	{ padding-bottom: 0.5em; }
 .atec-blue			{ color: rgb(34, 113, 177) !important; }
 .atec-black		{ color: black !important; }
 
-.atec-bg-white			{ background: white; }
-.atec-bg-white-06	{ background: rgba(255, 255, 255, 0.6); }
+.atec-code, .atec-box-white { border: solid 1px #d0d0d0; padding: 10px; max-width:fit-content; margin: 5px 0; }
+.atec-code { white-space: break-spaces; font-size: 1em; line-height: 1.3em; }
+
+.atec-bg-w		{ background: white; }
+.atec-bg-w6, .atec-box-white, .atec-code { background: rgba(255, 255, 255, 0.6); }
 .atec-right		{ float: right; }
 .atec-logo 		{ height:20px; width: auto; max-height: 20px; vertical-align: bottom; padding-bottom: 2px; }
 .atec-nowrap	{ white-space: nowrap; word-wrap: normal; }
@@ -37,17 +40,18 @@ p.submit	{ padding-bottom: 0.5em; }
 .atec-pro-btn	{ display: inline-block; font-weight: bold; width:28px; border: solid 1px white; border-radius: 3px; height:20px; padding: 0 4px; font-size:8px; color:#2271b1; }
 .atec-pro			{ font-size:10px; color:#fff; font-weight: 600; height: 0.5em; margin-bottom: 10px; text-shadow: 1px 1px 1px #000; }
 .atec-pro-box	{ display: inline-block; width: fit-content; background: rgba(255, 255, 255, 0.6); border: solid 1px #d0d0d0; padding: 10px 10px 0 10px; }
-.atec-code 		{ background: rgba(255, 255, 255, 0.6); border: solid 1px #d0d0d0; padding: 10px; white-space: break-spaces; max-width:fit-content; font-size: 1em; line-height: 1.3em; }
 .atec-sys-icon 	{ vertical-align: text-top; height:16px; margin-right: 5px; }
 .atec-cursor		{ cursor: pointer !important; }
 .atec-box-30	{ height: 32px; }
-.atec-badge		{ display:inline-block; width:fit-content; height:fit-content; border:solid 1px #eee; margin: 0px 10px 5px 0; border-radius: 3px; padding: 3px 5px; vertical-align: top; }
+.atec-badge		{ display:flex; width:fit-content; height:fit-content; border:solid 1px #eee; margin: 0px 10px 5px 0; border-radius: 3px; padding: 3px 5px; vertical-align: top; }
+.atec-counter { margin: 10px 5px 5px 0; background: #f0f0f0; border: solid 1px #d0d0d0; border-radius: 4px; width:24px; text-align: center; padding: 0 2px; };
 
 .atec-db			{ display: block; }
 .atec-dilb			{ display: inline-block; }
 .atec-dil			{ display: inline; }
+.atec-dc			{ display: table-cell; }
 .atec-dn			{ display: none !important; }
-.atec-fit 			{ width: fit-content !important; }
+.atec-fit, .atec-box-white { width: fit-content !important; }
 
 .atec-vat			{ vertical-align: top; }
 .atec-vam			{ vertical-align: middle; }
@@ -55,6 +59,8 @@ p.submit	{ padding-bottom: 0.5em; }
 .atec-sticky-left, .atec-sticky-right { background: #f9f9f9; border: solid 1px white; position:absolute; top: 10px; padding: 2px 4px; border-radius: 3px; }
 .atec-sticky-left { left: 0px; z-index: 0; }
 .atec-sticky-right { right: 20px; z-index: 1; }
+
+.atec-integritry { background: #f9f9f9; border: solid 1px white; padding: 2px 4px; border-radius: 3px; text-decoration: none !important; font-weight: 600; }
 
 .atec-table { box-shadow: 0 1px 1px rgba(0,0,0,.04); background: white; border-spacing: 0; table-layout: auto; max-width: 100%; margin-bottom: 10px; }
 .atec-table TH { font-weight: bold; color: #2c3338; }
@@ -64,12 +70,13 @@ p.submit	{ padding-bottom: 0.5em; }
 .atec-table TD:last-child, .atec-TDBR { border-right: 1px solid #c3c4c7; }
 
 .emptyTR1, .emptyTR2 { background: #f0f0f1; }
-.emptyTR1 TD { border: none !important; padding:0px !important; }
-.emptyTR2 TD { border-left: none !important; border-right: none !important; padding:2px !important; }
+.emptyTR1 { border: none !important; padding:0px !important; }
+.emptyTR2 { border-left: none !important; border-right: none !important; padding:2px !important; }
 .atec-table TH, .atec-table TD { text-align: left; border-bottom: 1px solid #c3c4c7; font-size: 14px; line-height: 1.4em; padding: 8px 10px; }
 .atec-table TBODY TR:nth-child(2n+1) { background: #f6f7f7; }
 .atec-table-w-100 { width: 100%; }
 .atec-table-tiny TD, .atec-table-tiny TH { padding: 4px 6px; }
+.atec-table-mid TD, .atec-table-mid TH { padding: 5px 7px; }
 .atec-table-td TD, .atec-table-td TH { border-right: solid 1px #c3c4c7; }
 .atec-table-td TD:last-child, .atec-table-td TH:last-child { border-right: solid 1px transparent; }
  .atec-table THEAD TD, .atec-table-td-first TD:first-child, .atec-table-tr-bold TD { font-weight: 600; }
@@ -187,12 +194,14 @@ p.submit	{ padding-bottom: 0.5em; }
 .atec-border-white { border: solid 1px #fefefe; padding: 10px; box-shadow: 1px 1px #d4d4d4; margin-bottom: 1rem; }
 .atec-overflow { overflow-x: auto; }
 .atec-progress { width: 33.3%; height:3px; line-height: 3px; display: block; margin: 1px 0 0 33.3%; }
-.atec-progressBar { background:rgba(0, 20, 129, 0.8); opacity: 1; height:100%; animation: 3s infinite alternate atec-progress ease-in-out; border-radius: 3px; }
-@keyframes atec-progress { 
-	0% { margin-left: 50%; width: 0%; opacity: 1; } 
-	99% { margin-left: 0.5%; width: 99%; opacity: 0.99; } 
-	100% { margin-left: 0%; width: 100%; opacity:0; }
-}
+.atec-progressBar { background:rgba(0, 20, 129, 0.8); opacity: 1; height:100%; animation: atec-progress 5s linear forwards; border-radius: 3px; }
+@keyframes atec-progress { 0% { margin-left: 50%; width: 0%; opacity: 1; } 50% { margin-left: 25%; width: 50%; } 99% { margin-left: 0.5%; width: 99%; } 100% { margin-left: 0%; width: 100%; opacity:0; } }
+
+.atec-loader-dots { text-align: center; }
+.atec-loader-dots span { display: inline-block; vertical-align: middle; width: 15px; height: 15px; background: #2271b1; border-radius: 20px; animation: atec-loader-dots 0.8s infinite alternate; }
+.atec-loader-dots span:nth-of-type(2) { animation-delay: 0.2s; }
+.atec-loader-dots span:nth-of-type(3) { animation-delay: 0.6s; }
+@keyframes atec-loader-dots { 0% { opacity: 0.9; transform: scale(0.5); } 100% { opacity: 0.1; transform: scale(1); }}
 
 .atec-bar { background: green; display:flex; height:10px; border-radius: 3px; margin: 0; }
 .atec-barDiv { background: #e0e0e0; width:150px; height:12px; padding: 0px !important; border: solid 1px #d0d0d0; border-radius: 3px; }

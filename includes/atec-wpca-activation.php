@@ -54,9 +54,10 @@ if (extension_loaded('apcu') && apcu_enabled())
 		foreach ($args as $arg) { delete_option('atec_WPCA_p_'.$arg.'_enabled'); }
 	}
 	
-	$options=atec_create_options('atec_WPCA_settings',['cache','debug','clear','salt'],['clear']);
+	$optName='atec_WPCA_settings';
+	$options=atec_create_options($optName,['cache','debug','clear','salt'],['clear']);
 	$options['salt']=hash('crc32', get_bloginfo(), FALSE);
-	update_option('atec_WPCA_settings', $options);
+	update_option($optName, $options);
 }
 
 }} 

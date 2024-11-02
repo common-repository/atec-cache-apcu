@@ -1,11 +1,10 @@
 === atec Cache APCu ===
 Contributors: DocJoJo
-Donate link: https://www.paypal.com/paypalme/atecsystems/5eur
 Tags: APCu object-cache and the only APCu based page-cache plugin available.
 Requires at least: 5.2
-Tested up to: 6.6.3
+Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 2.0.10
+Stable tag: 2.0.12
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -26,7 +25,7 @@ Frontend CPU footprint: <1 ms.
 
 == 3rd party as a service ==
 
-Once, when activating the plugin, an integrity check is requested from our server (https://atecplugins.com/).
+Once, when activating the plugin, an integrity check is requested from our server (https://atecplugins.com/) – if you give your permission.
 Privacy policy: https://atecplugins.com/privacy-policy/
 
 == Installation ==
@@ -48,6 +47,12 @@ Privacy policy: https://atecplugins.com/privacy-policy/
 6. Cache comparison (APCu, Redis, Memcached)
 
 == Changelog ==
+
+= 2.0.12 [2024.10.24] =
+* disabled_functions
+
+= 2.0.11 [2024.10.10] =
+* $_POST
 
 = 2.0.10 [2024.10.09] =
 * new translation

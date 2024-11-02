@@ -5,7 +5,7 @@
 * Description: APCu object-cache
 * Version: 1.0.8
 * Requires at least: 5.2
-* Tested up to: 6.6.3
+* Tested up to: 6.7
 * Requires PHP: 7.4
 * Author: Chris Ahrweiler
 * Author URI: https://atec-systems.com
